@@ -6,11 +6,17 @@ require("dotenv").config(); // For using .env variables
 const { ClerkExpressRequireAuth } = require("@clerk/clerk-sdk-node");
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000; // Use port 8070
 
 // Middleware
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:5173" })); // Allow requests from your frontend
+app.use(
+  cors({
+    origin: "*", // Allow all origins for development
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+  })
+);
 
 // MongoDB connection
 mongoose
