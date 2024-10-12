@@ -80,4 +80,13 @@ router.get("/get-user-data", ClerkExpressRequireAuth(), async (req, res) => {
   }
 });
 
+router.get("/all-users", async (req, res) => {
+  try {
+    const users = await User.find(); // Assuming you're using Mongoose
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching users" });
+  }
+});
+
 module.exports = router;
