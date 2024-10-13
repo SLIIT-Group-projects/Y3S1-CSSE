@@ -44,4 +44,35 @@ router.post(
   }
 );
 
+
+// all doctor selection
+router.get("/all-doctors", async (req, res) => {
+  try {
+    const doctors = await Doctor.find(); // Assuming you're using Mongoose
+    res.json(doctors);
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching doctors" });
+  }
+});
+
+// get one doctor details
+router.get("/doctor-details/:name", async (req, res) => {
+  const doctorName = req.params.name; // Get the doctor's name from the URL parameters
+
+  try {
+      // Find doctors that match the name (case insensitive)
+      const doctors = await Doctor.find({ name: { $regex: new RegExp(doctorName, "i") } });
+
+      if (doctors.length === 0) {
+          return res.status(404).json({ message: "No doctors found with that name" });
+      }
+
+      res.json(doctors);
+  } catch (error) {
+      console.error("Error fetching doctors:", error);
+      res.status(500).json({ error: "Error fetching doctors" });
+  }
+});
+
+
 module.exports = router;
