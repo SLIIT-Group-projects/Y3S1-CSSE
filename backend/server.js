@@ -4,6 +4,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const userRoutes = require("./routes/user"); // Import your user routes
 const blogRoutes = require("./routes/blog");
+const doctorRoutes = require("./routes/doctors");
 require("dotenv").config(); // For using .env variables
 const { ClerkExpressRequireAuth } = require("@clerk/clerk-sdk-node");
 
@@ -35,6 +36,8 @@ app.use("/uploads", express.static("uploads"));
 app.use("/user", userRoutes);
 
 app.use("/blog", blogRoutes);
+
+app.use("/doctor", doctorRoutes);
 
 // Start the server
 app.listen(PORT, () => {

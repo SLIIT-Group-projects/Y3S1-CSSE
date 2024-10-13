@@ -17,6 +17,7 @@ function UserDataDisplay() {
 
         try {
           const token = await getToken();
+          console.log("token - ",token)
 
           const response = await axios.get(
             "http://localhost:5000/user/get-user-data",
