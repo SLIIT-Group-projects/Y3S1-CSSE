@@ -14,6 +14,7 @@ router.post(
     try {
       // Retrieve the logged-in user's name and email from Clerk
       const name = req.auth.firstName + " " + req.auth.lastName;
+      const email = "tets@gmail.com";
 
       // Get day and slot from request body, expecting them as arrays
       const { day, slot } = req.body;
@@ -27,6 +28,7 @@ router.post(
       const newDoctor = new Doctor({
         clerkUserId,
         name,
+        email,
         day,
         slot,
       });
