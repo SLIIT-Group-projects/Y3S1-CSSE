@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 function DoctorDashboard() {
   const [reportID, setReportID] = useState("");
@@ -9,7 +10,8 @@ function DoctorDashboard() {
   const [comment, setComment] = useState("");
   const [doctorName, setDoctorName] = useState("Dr. John Smith");
   const [reports, setReports] = useState([]);
-  const [editReportId, setEditReportId] = useState(null); // For update mode
+  const [editReportId, setEditReportId] = useState(null); // For update
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -116,6 +118,9 @@ function DoctorDashboard() {
       setEditReportId(null); // Exit edit mode
       //setOldFileUrl(""); // Clear old file URL
       document.getElementById("uploadModal").style.display = "none"; // Close modal
+
+      // Use navigate to refresh the page after submission
+      navigate(0); // Reloads the current page
     } catch (error) {
       console.error("Error uploading lab report:", error);
       Swal.fire({
