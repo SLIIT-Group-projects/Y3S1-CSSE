@@ -17,6 +17,11 @@ import UserDetails from "./pages/AllUserDetails";
 import HomePage from "./pages/HomePage";
 import CreateBlogPage from "./pages/CreateBlogPage";
 
+// daham
+import AppointmentForm from "./pages/AddAppointment"
+import DoctorAppointments from "./pages/DoctorAppointment"
+import PatientAppointments from "./pages/AllAppointmentPatient"
+
 export default function App() {
   return (
     <>
@@ -28,6 +33,12 @@ export default function App() {
         <Route path="/test" element={<SaveUserData />} />
         <Route path="/display-user-data" element={<UserDataDisplay />} />
         <Route path="/display-all-user-details" element={<UserDetails />} />
+
+        {/* daham */}
+        <Route path="/appointment/add" element={<AppointmentForm />} />
+        <Route path="/appointment/doctor/" element={<DoctorAppointments />} />
+        <Route path="/appointment/patient/" element={<PatientAppointments />} />
+
       </Routes>
     </>
   );
