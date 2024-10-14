@@ -17,13 +17,8 @@ const AppNavBar = () => {
           to="/"
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
-          <img
-            src="https://flowbite.com/docs/images/logo.svg"
-            className="h-8"
-            alt="Logo"
-          />
-          <span className="self-center text-2xl font-semibold whitespace-nowrap text-gray-900">
-            Flowbite
+          <span className="self-center text-2xl  whitespace-nowrap text-blue-900 font-bold">
+            MEDICARE
           </span>
         </Link>
 
