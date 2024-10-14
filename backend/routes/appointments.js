@@ -13,7 +13,7 @@ router.post(
     const clerkUserId = req.auth.userId;
     try {
 
-      const {patient_name,patient_email,doctor_name,doc_id, day, slot,appointment_date,note,status } = req.body;
+      const {patient_name,patient_email,age,doctor_name,doc_id, day, slot,appointment_date,note,status } = req.body;
 
       const current_date = new Date();
 
@@ -22,6 +22,7 @@ router.post(
         clerkUserId,
         patient_name,
         patient_email,
+        age,
         doctor_name,
         doc_id,
         day,
