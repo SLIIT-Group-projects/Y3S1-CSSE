@@ -90,10 +90,10 @@ const AppNavBar = () => {
             </li>
             <li>
               <Link
-                to="/test"
+                to="/appointment/add"
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
               >
-                About
+                Appointment
               </Link>
             </li>
             <li>
@@ -109,7 +109,7 @@ const AppNavBar = () => {
                 to="/create-blog"
                 className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
               >
-                Contact
+                Blogs
               </Link>
             </li>
             {/* Conditional rendering for Dashboard link */}
