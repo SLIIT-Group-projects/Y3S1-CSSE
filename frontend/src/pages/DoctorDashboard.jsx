@@ -136,7 +136,7 @@ function DoctorDashboard() {
   };
   return (
     <div className="container mx-auto p-6">
-      <h2 className="text-xl font-bold">Doctor Dashboard</h2>
+      <h2 className="text-xl font-bold text-blue-700">Doctor Dashboard</h2>
       <div className="mt-4">
         <button
           onClick={() =>
@@ -178,7 +178,7 @@ function DoctorDashboard() {
             {/* Show the existing PDF file if it's in edit mode */}
             {editReportId && (
               <div className="mb-4">
-                <p className="text-gray-600">Previously Uploaded Report:</p>
+                <p className="text-blue-600">Previously Uploaded Report:</p>
                 <a
                   href={`http://localhost:5000/${
                     reports.find((r) => r._id === editReportId)?.fileUrl
@@ -215,7 +215,9 @@ function DoctorDashboard() {
       </div>{" "}
       {/* Table showing uploaded lab reports */}
       <div className="mt-6">
-        <h2 className="text-xl font-bold">All Uploaded Lab Reports</h2>
+        <h2 className="text-xl font-bold text-blue-500">
+          All Uploaded Lab Reports
+        </h2>
         <table className="min-w-full bg-white mt-4">
           <thead>
             <tr>

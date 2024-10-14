@@ -17,6 +17,7 @@ import UserDetails from "./pages/AllUserDetails";
 import HomePage from "./pages/HomePage";
 import CreateBlogPage from "./pages/CreateBlogPage";
 import AppNavBar from "./components/AppNavBar";
+import Footer from "./components/Footer";
 
 //vihara
 import UserLabTestsPage from "./pages/UserLabTestsPage";

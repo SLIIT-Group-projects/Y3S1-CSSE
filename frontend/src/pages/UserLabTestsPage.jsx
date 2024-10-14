@@ -62,11 +62,14 @@ function UserLabTestsPage() {
   }
   return (
     <div className="container mx-auto p-6">
-      <h2 className="text-xl font-bold">Your Lab Tests</h2>
+      <h2 className="text-xl font-bold text-blue-700 mb-8">Your Lab Tests</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {Array.isArray(labTests) && labTests.length > 0 ? (
           labTests.map((test) => (
-            <div key={test._id} className="bg-white shadow rounded-lg p-4">
+            <div
+              key={test._id}
+              className="bg-white shadow rounded-lg p-4 shadow-blue-700"
+            >
               <h3 className="font-bold">{test.reportID}</h3>
               <p>{new Date(test.uploadDate).toLocaleString()}</p>
               <a
