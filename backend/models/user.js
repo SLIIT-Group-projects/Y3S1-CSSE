@@ -6,6 +6,8 @@ const userSchema = new mongoose.Schema({
   firstName: { type: String },
   lastName: { type: String },
   createdAt: { type: Date, default: Date.now },
+  role: { type: String, enum: ['doctor', 'user'], default: 'user' },
+  labReports: [{ type: mongoose.Schema.Types.ObjectId, ref: 'LabReport' }]
 });
 
 const User = mongoose.model("User", userSchema);
