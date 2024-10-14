@@ -45,33 +45,36 @@ router.post(
 );
 
 
-// get appointments according to the doctor
+// // get appointments according to the doctor
 router.get("/get-doctor-appointments", ClerkExpressRequireAuth(), async (req, res) => {
-    const clerkUserId = req.auth.userId;
-    const { doc_id } = req.query; // Get the doctor's ID from query parameters
+  const clerkUserId = req.auth.userId; // Get the current user's clerkUserId
 
-    try {
-        // Find all appointments that match the current user's clerkUserId, optional doc_id, and status "pending"
-        const filter = { clerkUserId, status: "pending" }; // Added status filter
-        if (doc_id) {
-            filter.doc_id = doc_id;
-        }
+  try {
+      // Filter appointments based on the current user's clerkUserId as doc_id and status "Pending"
+      const filter = {
+          doc_id: clerkUserId, // Match doc_id with the current user's ID
+          status: "Pending", // Ensure status is "Pending"
+      };
 
-        const appointments = await Appointment.find(filter);
+      // Find all matching appointments
+      const appointments = await Appointment.find(filter);
 
-        if (!appointments || appointments.length === 0) {
-            return res.status(404).json({ message: "No appointments found" });
-        }
+      // Check if there are no matching appointments
+      if (!appointments || appointments.length === 0) {
+          return res.status(404).json({ message: "No pending appointments found" });
+      }
 
-        res.status(200).json({
-            message: "Appointments retrieved successfully",
-            appointments
-        });
-    } catch (error) {
-        console.error("Error fetching appointments:", error);
-        res.status(500).json({ message: "Internal server error" });
-    }
+      // Return the list of appointments found
+      res.status(200).json({
+          message: "Pending appointments retrieved successfully",
+          appointments
+      });
+  } catch (error) {
+      console.error("Error fetching appointments:", error);
+      res.status(500).json({ message: "Internal server error" });
+  }
 });
+
 
 
 
@@ -98,6 +101,29 @@ router.get("/get-doctor-appointments", ClerkExpressRequireAuth(), async (req, re
       res.status(500).json({ message: "Internal server error" });
     }
   });
+
+  // Fetch all appointments
+router.get("/get-all-appointments", ClerkExpressRequireAuth(), async (req, res) => {
+  try {
+    // Find all appointments in the database
+    const appointments = await Appointment.find();
+
+    // Check if there are no appointments
+    if (!appointments || appointments.length === 0) {
+      return res.status(404).json({ message: "No appointments found" });
+    }
+
+    // Return the list of appointments found
+    res.status(200).json({
+      message: "Appointments retrieved successfully",
+      appointments
+    });
+  } catch (error) {
+    console.error("Error fetching appointments:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
   
 // update status of the request
 router.route("/appointment-update/:id").put(async (req, res) => {
@@ -112,7 +138,7 @@ router.route("/appointment-update/:id").put(async (req, res) => {
         }
 
         // Update the appointment status to "completed"
-        appointment.status = "completed";
+        appointment.status = "Completed";
 
         // Save the updated appointment
         const updatedAppointment = await appointment.save();
@@ -123,5 +149,32 @@ router.route("/appointment-update/:id").put(async (req, res) => {
         res.status(500).send({ status: "Error updating appointment status", error: err.message });
     }
 });
+
+// delete appointment
+// Route for deleting an appointment
+// Route to delete an appointment
+router.delete("/delete-appointment/:id", ClerkExpressRequireAuth(), async (req, res) => {
+  const appointmentId = req.params.id;
+
+  try {
+      // Fetch the appointment by ID
+      const appointment = await Appointment.findById(appointmentId);
+
+      if (!appointment) {
+          return res.status(404).json({ message: "Appointment not found" });
+      }
+
+      // Proceed with deletion
+      await Appointment.findByIdAndDelete(appointmentId);
+      res.status(200).json({ message: "Appointment deleted successfully" });
+
+  } catch (error) {
+      console.error("Error deleting appointment:", error);
+      res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
+
 
 module.exports = router;
