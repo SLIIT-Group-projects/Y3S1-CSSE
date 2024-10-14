@@ -1,5 +1,5 @@
 // src/UserProfile.js
-import React from "react";
+import React, { useEffect } from "react";
 import { SignOutButton, useUser } from "@clerk/clerk-react";
 import Navbar from "./NavBar";
 import AppNavBar from "./AppNavBar";
@@ -7,9 +7,15 @@ import AppNavBar from "./AppNavBar";
 const UserProfilePage = () => {
   const { user } = useUser();
 
+  useEffect(() => {
+    if (user) {
+      // Store clerkUserId in localStorage when the user accesses their profile
+      localStorage.setItem("clerkUserId", user.id);
+    }
+  }, [user]);
+
   return (
     <>
-      <AppNavBar />
       <div className="flex flex-col items-center bg-gray-100 min-h-screen p-4">
         <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
           <h1 className="text-2xl font-bold text-center mb-4">User Profile</h1>

@@ -16,19 +16,32 @@ import UserDataDisplay from "./pages/UserDataDisplay";
 import UserDetails from "./pages/AllUserDetails";
 import HomePage from "./pages/HomePage";
 import CreateBlogPage from "./pages/CreateBlogPage";
+import AppNavBar from "./components/AppNavBar";
+
+//vihara
+import UserLabTestsPage from "./pages/UserLabTestsPage";
+import LabReportPage from "./pages/LabReportPage";
+import DoctorDashboard from "./pages/DoctorDashboard";
 
 export default function App() {
   return (
-    <>
+    <div>
+      {/* Navigation bar */}
+      <AppNavBar />
+
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/dashboard-labtest" element={<DoctorDashboard />} />
         <Route path="/signUp" element={<SignupPage />} />
         <Route path="/user-profile" element={<UserProfilePage />} />
         <Route path="/create-blog" element={<CreateBlogPage />} />
         <Route path="/test" element={<SaveUserData />} />
         <Route path="/display-user-data" element={<UserDataDisplay />} />
         <Route path="/display-all-user-details" element={<UserDetails />} />
+        {/* vihara */}
+        <Route path="/lab-tests" element={<UserLabTestsPage />} />
+        <Route path="/lab-tests/:id" element={<LabReportPage />} />
       </Routes>
-    </>
+    </div>
   );
 }

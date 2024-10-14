@@ -1,9 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const path = require('path');
 const bodyParser = require("body-parser");
 const userRoutes = require("./routes/user"); // Import your user routes
 const blogRoutes = require("./routes/blog");
+const labReportRoutes = require('./routes/labReportRoutes');
+const authMiddleware = require('./middleware/authMiddleware');  // Middleware for auth
 require("dotenv").config(); // For using .env variables
 const { ClerkExpressRequireAuth } = require("@clerk/clerk-sdk-node");
 
@@ -29,13 +32,17 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log("Error connecting to MongoDB:", err));
 
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(path.join(__dirname, 'uploads')));
 
 // Use routes (ClerkExpressRequireAuth will be used in user routes)
 app.use("/user", userRoutes);
 
 app.use("/blog", blogRoutes);
 
+
+// Routes
+app.use('/api/reports', labReportRoutes);
+app.use('/api/users', userRoutes);
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
