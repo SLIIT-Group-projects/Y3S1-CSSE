@@ -24,7 +24,7 @@ router.post(
   validateUserData,
   async (req, res) => {
     const clerkUserId = req.auth.userId;
-    const { firstName, lastName, additionalData, email } = req.body;
+    const { firstName, lastName, email } = req.body;
 
     try {
       let user = await User.findOne({ clerkUserId });
@@ -56,6 +56,35 @@ router.post(
     }
   }
 );
+
+router.post("/save-user", ClerkExpressRequireAuth(), async (req, res) => {
+  const clerkUserId = req.auth.userId;
+  const { email, firstName, lastName } = req.body;
+
+  try {
+    // Check if the user already exists in MongoDB
+    const existingUser = await User.findOne({ clerkUserId });
+
+    if (existingUser) {
+      return res.status(200).json({ message: "User already exists" });
+    }
+
+    // If user doesn't exist, save them to the database
+    const newUser = new User({
+      clerkUserId,
+      email,
+      firstName,
+      lastName,
+    });
+
+    await newUser.save();
+
+    res.status(201).json({ message: "User saved successfully" });
+  } catch (error) {
+    console.error("Error saving user to MongoDB:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 // Route to get user data
 router.get("/get-user-data", ClerkExpressRequireAuth(), async (req, res) => {
