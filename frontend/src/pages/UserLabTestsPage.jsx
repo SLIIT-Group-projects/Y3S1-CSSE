@@ -68,7 +68,7 @@ function UserLabTestsPage() {
           labTests.map((test) => (
             <div key={test._id} className="bg-white shadow rounded-lg p-4">
               <h3 className="font-bold">{test.reportID}</h3>
-              <p>{new Date(test.uploadDate).toLocaleDateString()}</p>
+              <p>{new Date(test.uploadDate).toLocaleString()}</p>
               <a
                 //href={`/${test.fileUrl}`}
                 href={`http://localhost:5000/${test.fileUrl}`}
