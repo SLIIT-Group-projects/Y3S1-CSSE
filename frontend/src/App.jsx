@@ -17,11 +17,10 @@ import UserDetails from "./pages/AllUserDetails";
 import HomePage from "./pages/HomePage";
 import CreateBlogPage from "./pages/CreateBlogPage";
 
-
 // daham
-import AppointmentForm from "./pages/AddAppointment"
-import DoctorAppointments from "./pages/DoctorAppointment"
-import PatientAppointments from "./pages/AllAppointmentPatient"
+import AppointmentForm from "./pages/AddAppointment";
+import DoctorAppointments from "./pages/DoctorAppointment";
+import PatientAppointments from "./pages/AllAppointmentPatient";
 import AppNavBar from "./components/AppNavBar";
 import Footer from "./components/Footer";
 
@@ -39,7 +38,6 @@ export default function App() {
 
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/dashboard-labtest" element={<DoctorDashboard />} />
         <Route path="/signUp" element={<SignupPage />} />
         <Route path="/user-profile" element={<UserProfilePage />} />
         <Route path="/create-blog" element={<CreateBlogPage />} />
@@ -56,6 +54,7 @@ export default function App() {
         {/* vihara */}
         <Route path="/lab-tests" element={<UserLabTestsPage />} />
         <Route path="/lab-tests/:id" element={<LabReportPage />} />
+        <Route path="/dashboard-labtest" element={<DoctorDashboard />} />
       </Routes>
     </div>
   );
