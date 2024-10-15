@@ -15,6 +15,9 @@ const HomePage = () => {
     const saveUserToDatabase = async () => {
       if (user) {
         try {
+          // Store clerkUserId in localStorage when the user logs in
+          localStorage.setItem("clerkUserId", user.id);
+
           // Get the token from Clerk
           const token = await getToken();
 
@@ -46,7 +49,6 @@ const HomePage = () => {
 
   return (
     <div>
-      <AppNavBar />
       <HeroSection />
       <BlogSection />
       <Footer />
