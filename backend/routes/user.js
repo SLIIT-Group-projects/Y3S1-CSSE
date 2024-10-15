@@ -20,11 +20,11 @@ const validateUserData = (req, res, next) => {
 // Route to save user data
 router.post(
   "/save-user-data",
-  ClerkExpressRequireAuth({}),
+  ClerkExpressRequireAuth(),
   validateUserData,
   async (req, res) => {
     const clerkUserId = req.auth.userId;
-    const { firstName, lastName, additionalData, email } = req.body;
+    const { firstName, lastName, email } = req.body;
 
     try {
       let user = await User.findOne({ clerkUserId });
@@ -57,6 +57,35 @@ router.post(
   }
 );
 
+router.post("/save-user", ClerkExpressRequireAuth(), async (req, res) => {
+  const clerkUserId = req.auth.userId;
+  const { email, firstName, lastName } = req.body;
+
+  try {
+    // Check if the user already exists in MongoDB
+    const existingUser = await User.findOne({ clerkUserId });
+
+    if (existingUser) {
+      return res.status(200).json({ message: "User already exists" });
+    }
+
+    // If user doesn't exist, save them to the database
+    const newUser = new User({
+      clerkUserId,
+      email,
+      firstName,
+      lastName,
+    });
+
+    await newUser.save();
+
+    res.status(201).json({ message: "User saved successfully" });
+  } catch (error) {
+    console.error("Error saving user to MongoDB:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 // Route to get user data
 router.get("/get-user-data", ClerkExpressRequireAuth(), async (req, res) => {
   const clerkUserId = req.auth.userId;
@@ -80,18 +109,12 @@ router.get("/get-user-data", ClerkExpressRequireAuth(), async (req, res) => {
   }
 });
 
-//get all users- siluni
-router.get('/get-all-users', async (req, res) => {
+router.get("/all-users", async (req, res) => {
   try {
-    const users = await User.find(); // Fetch all users from the database
-    if (!users || users.length === 0) {
-      return res.status(404).json({ message: 'No users found.' });
-    }
-
-    res.status(200).json({ users });
+    const users = await User.find(); // Assuming you're using Mongoose
+    res.json(users);
   } catch (error) {
-    console.error('Error fetching users:', error);
-    res.status(500).json({ message: 'Internal server error.', error: error.message });
+    res.status(500).json({ error: "Error fetching users" });
   }
 });
 

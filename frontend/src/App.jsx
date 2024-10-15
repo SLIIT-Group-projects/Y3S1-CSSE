@@ -13,32 +13,22 @@ import Navbar from "./components/NavBar";
 import UserProfilePage from "./components/UserProfile";
 import SaveUserData from "./pages/testPage";
 import UserDataDisplay from "./pages/UserDataDisplay";
-import AllPatients from "./pages/AllPatients";
-import AddRecord from "./pages/AddRecord";
-import AllRecords from "./pages/AllRecords";
+import UserDetails from "./pages/AllUserDetails";
+import HomePage from "./pages/HomePage";
+import CreateBlogPage from "./pages/CreateBlogPage";
 
 export default function App() {
   return (
     <>
-      <SignedIn>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Navigate to="/profile" replace />} />{" "}
-          {/* Redirect to profile */}
-          <Route path="/profile" element={<UserProfilePage />} />
-          <Route path="/test" element={<SaveUserData />} />
-          <Route path="/display-user-data" element={<UserDataDisplay />} />
-          <Route path="/AllPatients" element={<AllPatients />} />
-          <Route path="/add-record/:patientId" element={<AddRecord />} />
-          <Route path="/view-record/:patientId" element={<AllRecords/>} />
-        </Routes>
-      </SignedIn>
-
-      <SignedOut>
-        <Routes>
-          <Route path="/" element={<SignupPage />} />
-        </Routes>
-      </SignedOut>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/signUp" element={<SignupPage />} />
+        <Route path="/user-profile" element={<UserProfilePage />} />
+        <Route path="/create-blog" element={<CreateBlogPage />} />
+        <Route path="/test" element={<SaveUserData />} />
+        <Route path="/display-user-data" element={<UserDataDisplay />} />
+        <Route path="/display-all-user-details" element={<UserDetails />} />
+      </Routes>
     </>
   );
 }

@@ -1,35 +1,48 @@
 import React from "react";
-import { UserButton, UserProfile, useUser } from "@clerk/clerk-react";
+import { SignIn, UserButton, UserProfile, useUser } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
+import SignupPage from "./SignUp";
 
 const Navbar = () => {
-  const { user } = useUser();
-
-  const handleProfileClick = () => <UserProfile path="/user-profile" />;
+  const { user, isSignedIn } = useUser();
 
   return (
-    <nav className="bg-gray-800 p-4 flex justify-between items-center">
+    <nav className="bg-blue-950 p-4 flex justify-between items-center">
       <div className="text-white text-lg font-bold">My App</div>
 
       <div className="flex items-center gap-4">
-        <Link to="/">
-          <div className="text-white">Home</div>
+        {/* Home link */}
+        <Link to="/" className="text-white">
+          Home
         </Link>
 
+        {/* Additional links */}
         <a href="/test" className="text-white">
           Test
         </a>
         <a href="/display-user-data" className="text-white">
           Display user data
         </a>
-        <Link to="/profile">
-          <img
-            onClick={handleProfileClick} // Add click handler for profile image
-            src={user?.imageUrl} // Ensure you're using profileImageUrl
-            alt="Profile"
-            className="w-10 h-10 rounded-full mr-3 cursor-pointer" // Add cursor-pointer for better UX
-          />
-        </Link>
+
+        {/* Conditionally render SignIn or UserButton/Profile */}
+        {isSignedIn ? (
+          // When signed in, show profile button
+          <>
+            <Link to="/user-profile" className="flex items-center">
+              <img
+                src={user?.imageUrl} // Ensure you're using profileImageUrl
+                alt="Profile"
+                className="w-10 h-10 rounded-full cursor-pointer"
+              />
+            </Link>
+          </>
+        ) : (
+          <Link to="/signUp">
+            <a href="/signUp" className="text-white">
+              signUp
+            </a>
+          </Link>
+        )}
       </div>
     </nav>
   );

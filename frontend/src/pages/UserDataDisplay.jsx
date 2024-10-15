@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser, useAuth } from "@clerk/clerk-react"; // Import useAuth to get token
+import { Link } from "react-router-dom";
 
 function UserDataDisplay() {
   const { user } = useUser(); // Get the current user
@@ -62,6 +63,9 @@ function UserDataDisplay() {
         <strong>Favorite Color:</strong> {userData.additionalData}{" "}
         {/* Assuming additionalData holds the favorite color */}
       </p>
+      <Link to="/display-all-user-details">
+        <button className="bg-blue-400 p-4 m-3">get all users details</button>
+      </Link>
     </div>
   );
 }

@@ -21,7 +21,6 @@ function SaveUserData() {
 
       try {
         const token = await getToken();
-        console.log(token);
 
         console.log("Saving user data:", {
           clerkUserId,
@@ -61,7 +60,6 @@ function SaveUserData() {
   return (
     <div>
       <h1>Welcome, {user ? user.firstName : "User"}!</h1>
-      
 
       {/* Input field to collect the favorite color */}
       <input
