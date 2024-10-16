@@ -31,6 +31,11 @@ import LabReportPage from "./pages/LabReportPage";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import Dashboard from "./pages/Dashboard";
 
+//siluni
+import AllPatients from "./pages/AllPatients";
+import AddRecord from "./pages/AddRecord";
+import AllRecords from "./pages/AllRecords";
+
 export default function App() {
   return (
     <div>
@@ -56,6 +61,11 @@ export default function App() {
         {/* vihara */}
         <Route path="/lab-tests" element={<UserLabTestsPage />} />
         <Route path="/lab-tests/:id" element={<LabReportPage />} />
+
+        {/* siluni */}
+          <Route path="/AllPatients" element={<AllPatients />} />
+          <Route path="/add-record/:patientId" element={<AddRecord />} />
+          <Route path="/view-record/:patientId" element={<AllRecords/>} />
       </Routes>
     </div>
   );
