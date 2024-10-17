@@ -7,7 +7,7 @@ import UserDataDisplay from "./pages/UserDataDisplay";
 import UserDetails from "./pages/AllUserDetails";
 import HomePage from "./pages/HomePage";
 import CreateBlogPage from "./pages/CreateBlogPage";
-import DoctorDashboard from "./pages/DoctorDashboard";
+import AdminDoctorDashboard from "./pages/AdminDoctorDashboard";
 import DoctorBlogs from "./pages/DoctorBlogs";
 import BlogDetails from "./pages/BlogDetails";
 
@@ -22,7 +22,7 @@ export default function App() {
         <Route path="/get-blog/:id" element={<BlogDetails />} />
         <Route path="/get-doctor-blogs" element={<DoctorBlogs />} />
         <Route path="/test" element={<SaveUserData />} />
-        <Route path="/dashboard" element={<DoctorDashboard />} />
+        <Route path="/dashboard" element={<AdminDoctorDashboard />} />
         <Route path="/display-user-data" element={<UserDataDisplay />} />
         <Route path="/display-all-user-details" element={<UserDetails />} />
       </Routes>

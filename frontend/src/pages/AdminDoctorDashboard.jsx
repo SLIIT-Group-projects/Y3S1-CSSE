@@ -2,7 +2,7 @@ import React from "react";
 import AppNavBar from "../components/AppNavBar";
 import DoctorNavBar from "../components/DoctorNavBar";
 
-const DoctorDashboard = () => {
+const AdminDoctorDashboard = () => {
   return (
     <>
       <DoctorNavBar />
@@ -10,4 +10,4 @@ const DoctorDashboard = () => {
   );
 };
 
-export default DoctorDashboard;
+export default AdminDoctorDashboard;
