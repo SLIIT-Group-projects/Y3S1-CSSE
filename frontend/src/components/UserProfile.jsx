@@ -53,7 +53,7 @@ const UserProfilePage = () => {
                 />
               </svg>
 
-              <div className="text-lg cursor-pointer">My Apointments</div>
+              <div className="text-lg cursor-pointer"> <Link to="/appointment/patient/">My Apointments</Link> </div>
             </div>
             <div className="flex gap-6 m-4">
               <svg
@@ -87,9 +87,6 @@ const UserProfilePage = () => {
           </div>
 
           <div className="mt-4">
-            <button className="bg-blue-500 text-white py-2 px-4 mx-4 rounded hover:bg-blue-600 transition duration-300">
-              Edit Profile
-            </button>
             <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
               <SignOutButton />
             </button>

@@ -4,6 +4,8 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const userRoutes = require("./routes/user"); // Import your user routes
 const blogRoutes = require("./routes/blog");
+const doctorRoutes = require("./routes/doctors");
+const appointmentRoutes = require("./routes/appointments");
 const labReportRoutes = require("./routes/labReportRoutes");
 const authMiddleware = require("./middleware/authMiddleware"); // Middleware for auth
 require("dotenv").config(); // For using .env variables
@@ -36,6 +38,9 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/user", userRoutes);
 app.use("/blog", blogRoutes);
 
+app.use("/doctor", doctorRoutes);
+
+app.use("/appointment", appointmentRoutes);
 // Routes
 app.use("/api/reports", labReportRoutes);
 app.use("/api/users", userRoutes);
