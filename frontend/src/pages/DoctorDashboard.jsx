@@ -88,27 +88,39 @@ function DoctorDashboard() {
     }
 
     try {
-      if (editReportId) {
-        // Update
-        await axios.put(
-          `http://localhost:5000/api/reports/${editReportId}`,
-          formData
-        );
-        Swal.fire("Updated!", "The lab report has been updated.", "success");
-      } else {
-        //Create
-        await axios.post("http://localhost:5000/api/reports/upload", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            // Authorization: `Bearer ${localStorage.getItem("token")}`, // Corrected header
-          },
-        });
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "Lab report uploaded successfully!",
-        });
-      }
+      // Determine whether it's a create or update operation
+      const url = editReportId
+        ? `http://localhost:5000/api/reports/${editReportId}` // Update URL
+        : "http://localhost:5000/api/reports/upload"; // Create URL
+      const method = editReportId ? "put" : "post"; // HTTP method
+
+      // Make API request
+      await axios[method](url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      // if (editReportId) {
+      //   // Update
+      //   await axios.put(
+      //     `http://localhost:5000/api/reports/${editReportId}`,
+      //     formData
+      //   );
+      //   Swal.fire("Updated!", "The lab report has been updated.", "success");
+      // } else {
+      //   //Create
+      //   await axios.post("http://localhost:5000/api/reports/upload", formData, {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //       // Authorization: `Bearer ${localStorage.getItem("token")}`, // Corrected header
+      //     },
+      //   });
+      Swal.fire({
+        icon: "success",
+        title: editReportId ? "Updated!" : "Uploaded!",
+        text: "Lab report uploaded successfully!",
+      });
 
       // Clear the form after successful submission
       setReportID("");
