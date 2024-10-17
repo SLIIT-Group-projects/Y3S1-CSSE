@@ -11,9 +11,25 @@ import AdminDoctorDashboard from "./pages/AdminDoctorDashboard";
 import DoctorBlogs from "./pages/DoctorBlogs";
 import BlogDetails from "./pages/BlogDetails";
 
+// daham
+import AppointmentForm from "./pages/AddAppointment";
+import DoctorAppointments from "./pages/DoctorAppointment";
+import PatientAppointments from "./pages/AllAppointmentPatient";
+import AppNavBar from "./components/AppNavBar";
+import Footer from "./components/Footer";
+
+//vihara
+import UserLabTestsPage from "./pages/UserLabTestsPage";
+import LabReportPage from "./pages/LabReportPage";
+import DoctorDashboard from "./pages/DoctorDashboard";
+import Dashboard from "./pages/Dashboard";
+
 export default function App() {
   return (
-    <>
+    <div>
+      {/* Navigation bar */}
+      <AppNavBar />
+
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signUp" element={<SignupPage />} />
@@ -25,7 +41,18 @@ export default function App() {
         <Route path="/dashboard" element={<AdminDoctorDashboard />} />
         <Route path="/display-user-data" element={<UserDataDisplay />} />
         <Route path="/display-all-user-details" element={<UserDetails />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+
+        {/* daham */}
+        <Route path="/appointment/add" element={<AppointmentForm />} />
+        <Route path="/appointment/doctor/" element={<DoctorAppointments />} />
+        <Route path="/appointment/patient/" element={<PatientAppointments />} />
+
+        {/* vihara */}
+        <Route path="/lab-tests" element={<UserLabTestsPage />} />
+        <Route path="/lab-tests/:id" element={<LabReportPage />} />
+        <Route path="/dashboard-labtest" element={<DoctorDashboard />} />
       </Routes>
-    </>
+    </div>
   );
 }
