@@ -1,3 +1,4 @@
+const { DoctorObserver, PatientObserver, NotificationSubject } = require('../observers/notificationObserver');
 const LabReport = require('../models/labReport');
 const User= require("../models/user");
 const multer = require('multer');
@@ -64,15 +65,6 @@ exports.getReport = async (req, res) => {
     res.status(500).json({ message: 'Server error', err });
   }
 };
-// Fetch reports relevant to the logged-in user
-// exports.getUserReports = async (req, res) => {
-//     try {
-//       const reports = await LabReport.find({ userId: req.user.id });
-//       res.status(200).json(reports || []);
-//     } catch (err) {
-//       res.status(500).json({ message: 'Error fetching reports', err });
-//     }
-//   };
 
 // Fetch lab reports for a specific user
 exports.getUserReports = async (req, res) => {
@@ -133,12 +125,12 @@ exports.getAllLabReports = async (req, res) => {
 // Fetch all lab reports with user information
 exports.getAllReportsWithUserInfo = async (req, res) => {
   try {
-    console.log('Fetching all lab reports...');
+    //console.log('Fetching all lab reports...');
     const reports = await LabReport.find().populate('userId', 'firstName lastName email clerkUserId');
     if (!reports || reports.length === 0) {
       return res.status(404).json({ message: 'No reports found' });
     }
-    console.log('Reports fetched successfully:', reports);
+    //console.log('Reports fetched successfully:', reports);
     res.status(200).json(reports);
   } catch (err) {
     console.error('Error fetching reports:', err);
@@ -174,29 +166,6 @@ exports.updateReport = async (req, res) => {
     
     const reportId = req.params.id;
 
-  //   const updatedData = {
-  //     reportID,
-  //     clerkUserId,
-  //     doctorComments: [{ doctorName, comment }]
-  //   };
-
-  //   if (req.file) {
-  //     updatedData.fileUrl = req.file.path;
-  //     updatedData.fileSize = req.file.size;
-  //     updatedData.fileType = req.file.mimetype;
-  //   }
-
-  //   const updatedReport = await LabReport.findByIdAndUpdate(reportId, updatedData, { new: true });
-
-  //   if (!updatedReport) {
-  //     return res.status(404).json({ message: 'Lab report not found' });
-  //   }
-
-  //   res.status(200).json({ message: 'Lab report updated successfully', labReport: updatedReport });
-  // } catch (err) {
-  //   console.error('Error updating lab report:', err);
-  //   res.status(500).json({ message: 'Error updating lab report', err });
-  // }
   // Find the existing lab report
   const existingReport = await LabReport.findById(reportId);
   if (!existingReport) {
@@ -217,6 +186,18 @@ exports.updateReport = async (req, res) => {
 
   // Save the updated report
   const updatedReport = await existingReport.save();
+  // Initialize the NotificationSubject
+  const notificationSubject = new NotificationSubject();
+
+  // Attach observers (Doctors and Patients)
+  const doctorObserver = new DoctorObserver();
+  const patientObserver = new PatientObserver();
+
+  notificationSubject.attach(doctorObserver);
+  notificationSubject.attach(patientObserver);
+
+  // Notify observers after updating the report
+  notificationSubject.notify(updatedReport);
   res.status(200).json({ message: 'Lab report updated successfully', updatedReport });
 } catch (err) {
   res.status(500).json({ message: 'Server error', err });
