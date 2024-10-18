@@ -53,13 +53,9 @@ const AppointmentsTable = () => {
           },
         }
       );
-      setAppointments((prev) =>
-        prev.map((appt) =>
-          appt._id === appointmentId ? { ...appt, status: "completed" } : appt
-        )
-      );
       alert("Appointment approved.");
-      // Optionally, you can refetch appointments or update the state
+      // Reload the page after the appointment is approved
+      window.location.reload();
     } catch (err) {
       console.error("Error approving appointment:", err);
       alert("Failed to approve appointment.");

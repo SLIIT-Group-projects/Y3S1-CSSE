@@ -1,23 +1,71 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useUser, useAuth } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import axios from "axios";
 import TodoList from "./ToDoList";
-import { useUser } from "@clerk/clerk-react";
+
+const Badge = ({ count, onClick }) => {
+  return (
+    <div
+      className="bg-blue-500 text-white font-bold rounded-full w-8 h-8 flex items-center justify-center cursor-pointer" // Add cursor-pointer
+      onClick={onClick} // Handle click event
+    >
+      {count}
+    </div>
+  );
+};
 
 const DoctorDashboardComps = () => {
   const { user } = useUser();
+  const { getToken, isLoaded, isSignedIn } = useAuth();
+  const [appointmentCount, setAppointmentCount] = useState(0);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  useEffect(() => {
+    const fetchAppointmentCount = async () => {
+      if (!user || !user.id) {
+        setError("User not authenticated.");
+        return;
+      }
+
+      try {
+        const token = await getToken();
+        const response = await axios.get("http://localhost:5000/appointment/get-doctor-appointments", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setAppointmentCount(response.data.appointments.length);
+      } catch (err) {
+        console.error("Error fetching appointments:");
+        setError("No appointments today.");
+      }
+    };
+
+    if (isSignedIn) {
+      fetchAppointmentCount();
+    }
+  }, [user, isSignedIn, getToken]);
+
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isSignedIn) {
+    return <div>User not authenticated.</div>;
+  }
 
   return (
     <div className="p-8 grid grid-cols-6 gap-4">
       <div className="border flex border-gray-400 p-4 col-span-2 row-span-2">
-        {/* Profile Picture */}
         <div className="flex-shrink-0">
           <img
-            src={user?.imageUrl} // Clerk's profile image URL
+            src={user?.imageUrl}
             alt="Profile"
             className="w-32 h-32 rounded-full border-4 border-blue-500 cursor-pointer"
           />
         </div>
-
-        {/* Doctor's Info */}
         <div className="ml-4">
           <h1 className="text-2xl font-bold">
             Dr. {user?.firstName} {user?.lastName}
@@ -43,6 +91,17 @@ const DoctorDashboardComps = () => {
       <div className="border border-gray-400 p-4 col-span-2 row-span-1">
         <h2 className="text-xl font-bold">Appointments</h2>
         <p className="mt-4">Upcoming appointments and schedule.</p>
+        {error ? (
+          <p className="text-red-500">{error}</p>
+        ) : (
+          <div className="mt-2">
+            Today's Appointments:
+            <Badge 
+              count={appointmentCount} 
+              onClick={() => navigate('/appointment/doctor')}
+            />
+          </div>
+        )}
       </div>
 
       <div className="border border-gray-400 p-4 col-span-3 row-span-1">
@@ -60,8 +119,7 @@ const DoctorDashboardComps = () => {
         <p className="mt-4">Customize dashboard preferences.</p>
       </div>
 
-      {/* Add the TodoList component */}
-      <div className=" col-span-2 row-span-2">
+      <div className="col-span-2 row-span-2">
         <TodoList />
       </div>
     </div>
