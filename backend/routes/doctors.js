@@ -14,35 +14,46 @@ router.post(
     try {
       // Retrieve the logged-in user's name and email from Clerk
       const name = req.auth.firstName + " " + req.auth.lastName;
-      const email = "tets@gmail.com";
+      const email = "test@gmail.com"; // Note: This is hardcoded. Adjust as necessary.
 
-      // Get day and slot from request body, expecting them as arrays
-      const { day, slot } = req.body;
+      // Get day, slot, and experience from request body, expecting them as arrays
+      const { day, slot, experience, bio } = req.body;
 
       // Ensure day and slot are arrays
       if (!Array.isArray(day) || !Array.isArray(slot)) {
         return res.status(400).json({ message: "Day and slot should be arrays" });
       }
 
+      // Ensure experience and bio are defined
+      if (!experience || typeof experience !== 'string') {
+        return res.status(400).json({ message: "Experience is required and should be a string." });
+      }
+      if (!bio || typeof bio !== 'string') {
+        return res.status(400).json({ message: "Bio is required and should be a string." });
+      }
+
       // Create a new doctor record
       const newDoctor = new Doctor({
         clerkUserId,
         name,
+        experience,
+        bio,
         email,
         day,
         slot,
       });
 
-      // Save the new doctor to the database
+      // Save the doctor record to the database
       await newDoctor.save();
 
       res.status(201).json({ message: "Doctor created successfully", doctor: newDoctor });
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: "Server error" });
+      console.error("Error creating doctor:", err);
+      res.status(500).json({ message: "Internal server error" });
     }
   }
 );
+
 
 
 // all doctor selection

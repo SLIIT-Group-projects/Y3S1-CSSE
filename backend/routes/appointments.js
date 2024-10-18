@@ -46,14 +46,25 @@ router.post(
 
 
 // // get appointments according to the doctor
-router.get("/get-doctor-appointments", ClerkExpressRequireAuth(), async (req, res) => {
-  const clerkUserId = req.auth.userId; // Get the current user's clerkUserId
+router.get(
+  "/get-doctor-appointments",
+  ClerkExpressRequireAuth(),
+  async (req, res) => {
+    const clerkUserId = req.auth.userId; // Get the current user's clerkUserId
 
-  try {
-      // Filter appointments based on the current user's clerkUserId as doc_id and status "Pending"
+    try {
+      // Get today's date in UTC
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Set time to the start of the day
+
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1); // Set to the next day
+
+      // Filter appointments based on the current user's clerkUserId, status "Pending", and today's date
       const filter = {
-          doc_id: clerkUserId, // Match doc_id with the current user's ID
-          status: "Pending", // Ensure status is "Pending"
+        doc_id: clerkUserId, // Match doc_id with the current user's ID
+        status: "Pending", // Ensure status is "Pending"
+        appointment_date: { $gte: today, $lt: tomorrow }, // Match today's date
       };
 
       // Find all matching appointments
@@ -61,19 +72,23 @@ router.get("/get-doctor-appointments", ClerkExpressRequireAuth(), async (req, re
 
       // Check if there are no matching appointments
       if (!appointments || appointments.length === 0) {
-          return res.status(404).json({ message: "No pending appointments found" });
+        return res
+          .status(404)
+          .json({ message: "No pending appointments for today." });
       }
 
       // Return the list of appointments found
       res.status(200).json({
-          message: "Pending appointments retrieved successfully",
-          appointments
+        message: "Today's pending appointments retrieved successfully.",
+        appointments,
       });
-  } catch (error) {
+    } catch (error) {
       console.error("Error fetching appointments:", error);
       res.status(500).json({ message: "Internal server error" });
+    }
   }
-});
+);
+
 
 
 

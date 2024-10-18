@@ -16,7 +16,11 @@ import AppointmentForm from "./pages/AddAppointment";
 import DoctorAppointments from "./pages/DoctorAppointment";
 import PatientAppointments from "./pages/AllAppointmentPatient";
 import AppNavBar from "./components/AppNavBar";
+import DoctorsViews from "./pages/DoctorsViews";
 import Footer from "./components/Footer";
+import "../src/css/main.css"
+import "../src/css/appointment.css"
+
 
 //vihara
 import UserLabTestsPage from "./pages/UserLabTestsPage";
@@ -47,6 +51,7 @@ export default function App() {
         <Route path="/appointment/add" element={<AppointmentForm />} />
         <Route path="/appointment/doctor/" element={<DoctorAppointments />} />
         <Route path="/appointment/patient/" element={<PatientAppointments />} />
+        <Route path="/appointment/doctor/all" element={<DoctorsViews />} />
 
         {/* vihara */}
         <Route path="/lab-tests" element={<UserLabTestsPage />} />
