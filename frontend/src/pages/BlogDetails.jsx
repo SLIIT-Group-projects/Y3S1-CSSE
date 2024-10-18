@@ -29,60 +29,110 @@ const BlogDetails = () => {
   if (!blog) return <div>Blog not found.</div>;
 
   return (
-    <div className="container mx-auto my-8 p-6 bg-white rounded-lg shadow-lg">
-      <h1 className="text-4xl font-bold mb-4">{blog.title}</h1>
-      <p className="text-gray-600 mb-4">{blog.introduction}</p>
+    <div className="container mx-auto my-12 p-8 bg-white rounded-lg shadow-lg max-w-4xl">
+      <h1 className="text-5xl text-center font-extrabold mb-6 text-blue-900">
+        {blog.title}
+      </h1>
+      <p className="text-lg text-gray-500 leading-relaxed mb-6">
+        {blog.introduction}
+      </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        {/* Display Blog Images in a grid */}
+      {/* Blog Images Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
         {blog.images.map((image, index) => (
-          <img
-            key={index}
-            src={`http://localhost:5000/${image}`}
-            alt={`Blog Image ${index + 1}`}
-            className="w-full h-48 object-cover rounded-lg"
-          />
+          <div key={index} className="relative">
+            <img
+              src={`http://localhost:5000/${image}`}
+              alt={`Blog Image ${index + 1}`}
+              className="w-full h-64 object-cover rounded-lg shadow-md"
+            />
+            <span className="text-sm text-gray-400 absolute bottom-2 left-2">
+              Image {index + 1}
+            </span>
+          </div>
         ))}
       </div>
 
-      <h2 className="text-2xl font-semibold mb-2">Symptoms</h2>
-      <p className="text-gray-700 mb-4">{blog.symptoms}</p>
+      {/* Symptoms Section */}
+      <section className="mb-8">
+        <h2 className="text-3xl font-bold mb-3 text-blue-800">Symptoms</h2>
+        <p className="text-md text-gray-700 leading-relaxed">{blog.symptoms}</p>
+      </section>
 
-      <h2 className="text-2xl font-semibold mb-2">Causes</h2>
-      <p className="text-gray-700 mb-4">{blog.causes}</p>
+      {/* Causes Section */}
+      <section className="mb-8">
+        <h2 className="text-3xl font-bold mb-3 text-blue-800">Causes</h2>
+        <p className="text-md text-gray-700 leading-relaxed">{blog.causes}</p>
+      </section>
 
-      <h2 className="text-2xl font-semibold mb-2">Prevention</h2>
-      <p className="text-gray-700 mb-4">{blog.prevention}</p>
+      {/* Prevention Section */}
+      <section className="mb-8">
+        <h2 className="text-3xl font-bold mb-3 text-blue-800">Prevention</h2>
+        <p className="text-md text-gray-700 leading-relaxed">
+          {blog.prevention}
+        </p>
+      </section>
 
-      <h2 className="text-2xl font-semibold mb-2">Treatment</h2>
-      <p className="text-gray-700 mb-4">{blog.treatment}</p>
+      {/* Treatment Section */}
+      <section className="mb-8">
+        <h2 className="text-3xl font-bold mb-3 text-blue-800">Treatment</h2>
+        <p className="text-md text-gray-700 leading-relaxed">
+          {blog.treatment}
+        </p>
+      </section>
 
+      {/* Conditional Sections */}
       {blog.caseStudy && (
-        <>
-          <h2 className="text-2xl font-semibold mb-2">Case Study</h2>
-          <p className="text-gray-700 mb-4">{blog.caseStudy}</p>
-        </>
+        <section className="mb-8">
+          <h2 className="text-3xl font-bold mb-3 text-blue-800">Case Study</h2>
+          <p className="text-md text-gray-700 leading-relaxed">
+            {blog.caseStudy}
+          </p>
+        </section>
       )}
 
       {blog.references && (
-        <>
-          <h2 className="text-2xl font-semibold mb-2">References</h2>
-          <p className="text-gray-700 mb-4">{blog.references}</p>
-        </>
+        <section className="mb-8">
+          <h2 className="text-3xl font-bold mb-3 text-blue-800">References</h2>
+          <ul className="list-disc list-inside text-md text-gray-700">
+            {blog.references.split("\n").map((reference, index) => (
+              <li key={index}>{reference}</li>
+            ))}
+          </ul>
+        </section>
       )}
 
       {blog.relatedLinks && (
-        <>
-          <h2 className="text-2xl font-semibold mb-2">Related Links</h2>
-          <p className="text-gray-700 mb-4">{blog.relatedLinks}</p>
-        </>
+        <section className="mb-8">
+          <h2 className="text-3xl font-bold mb-3 text-blue-800">
+            Related Links
+          </h2>
+          <ul className="list-disc list-inside text-md text-blue-600">
+            {blog.relatedLinks.split("\n").map((link, index) => (
+              <li key={index}>
+                <a
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  {link}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
 
       {blog.disclaimer && (
-        <>
-          <h2 className="text-2xl font-semibold mb-2">Disclaimer</h2>
-          <p className="text-gray-700 mb-4">{blog.disclaimer}</p>
-        </>
+        <section className="mb-8 bg-gray-100 p-4 rounded-lg">
+          <h2 className="text-2xl font-semibold mb-3 text-red-600">
+            Disclaimer
+          </h2>
+          <p className="text-sm text-gray-600 leading-relaxed">
+            {blog.disclaimer}
+          </p>
+        </section>
       )}
     </div>
   );
