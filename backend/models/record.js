@@ -1,29 +1,28 @@
 const mongoose = require("mongoose");
-const User = require("./user")
+const User = require("./user");
 
 const recordsSchema = new mongoose.Schema({
-    doctorId:{
+    doctorId: {
         type: String,
         required: true
     },
-    userId:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+    userId: {
+        type: String, 
         required: true
     },
-    records:{
+    records: {
         type: String,
         required: true,
     },
-    prescription:{
+    prescription: {
         type: [String],
         required: true,
     },
-    specialNotes:{
+    specialNotes: {
         type: String,
         required: true,
-    },
-})
+    }
+}, { timestamps: true });  // This option automatically adds createdAt and updatedAt fields
 
 const Record = mongoose.model("Record", recordsSchema);
 module.exports = Record;

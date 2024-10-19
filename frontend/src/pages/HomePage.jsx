@@ -20,6 +20,7 @@ const HomePage = () => {
 
           // Get the token from Clerk
           const token = await getToken();
+          
 
           // Send user details along with the token to your Express API
           const response = await axios.post(

@@ -35,6 +35,7 @@ import Dashboard from "./pages/Dashboard";
 import AllPatients from "./pages/AllPatients";
 import AddRecord from "./pages/AddRecord";
 import AllRecords from "./pages/AllRecords";
+import UserRecords from "./pages/userRecords";
 
 export default function App() {
   return (
@@ -66,6 +67,8 @@ export default function App() {
           <Route path="/AllPatients" element={<AllPatients />} />
           <Route path="/add-record/:patientId" element={<AddRecord />} />
           <Route path="/view-record/:patientId" element={<AllRecords/>} />
+          <Route path="/user-records" element={<UserRecords/>} />
+          
       </Routes>
     </div>
   );
