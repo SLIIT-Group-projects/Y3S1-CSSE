@@ -9,11 +9,15 @@ const DoctorViews = () => {
   const [error, setError] = useState(null); // State for error handling
   const [searchTerm, setSearchTerm] = useState(""); // State for search input
 
+  // Default profile image URL
+  const defaultProfileImage =
+    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
         const token = await getToken(); // Retrieve the token for authorization
-        console.log("token - ",token)
+        console.log("token - ", token);
 
         const response = await axios.get(
           "http://localhost:5000/doctor/all-doctors",
@@ -65,8 +69,16 @@ const DoctorViews = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredDoctors.map((doctor) => (
-            <div key={doctor._id} className="bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105">
-              <div className="relative mb-4">
+            <div
+              key={doctor._id}
+              className="bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:scale-105"
+            >
+              <div className=" mb-4">
+                <img
+                  src={defaultProfileImage}
+                  alt={`${doctor.name}'s profile`}
+                  className="w-24 h-24 rounded-full mx-auto mb-4"
+                />
                 <div className="absolute top-0 right-0 bg-green-500 text-white text-sm rounded-bl-lg px-2 py-1">
                   Available
                 </div>
@@ -74,8 +86,15 @@ const DoctorViews = () => {
               <h3 className="text-xl font-bold mb-2">{doctor.name}</h3>
               <p className="text-gray-700 mb-1">Experience: {doctor.experience} years</p>
               <p className="text-gray-700 mb-1">Bio: {doctor.bio}</p>
-              <p className="text-gray-700 mb-1">Email: <a href={`mailto:${doctor.email}`} className="text-blue-500">{doctor.email}</a></p>
-              <p className="text-gray-700 mb-1">Availability: {doctor.day.join(", ")}</p>
+              <p className="text-gray-700 mb-1">
+                Email:{" "}
+                <a href={`mailto:${doctor.email}`} className="text-blue-500">
+                  {doctor.email}
+                </a>
+              </p>
+              <p className="text-gray-700 mb-1">
+                Availability: {doctor.day.join(", ")}
+              </p>
               <p className="text-gray-700">Slots: {doctor.slot.join(", ")}</p>
             </div>
           ))}

@@ -33,6 +33,13 @@ const PatientAppointments = () => {
   }, [getToken]);
 
   const handleDelete = async (appointmentId) => {
+    // Ask for confirmation before proceeding with deletion
+    const confirmDelete = window.confirm("Are you sure you want to cancel this appointment?");
+    
+    if (!confirmDelete) {
+      return; // Exit the function if the user cancels
+    }
+
     try {
       const token = await getToken(); // Retrieve the token for authorization
 
@@ -67,7 +74,7 @@ const PatientAppointments = () => {
 
   return (
     <div className="medi-main-gradient appo-all-main">
-      <div className="container  mx-auto p-4">
+      <div className="container mx-auto p-4">
         <h2 className="text-3xl font-extrabold mb-4 medi-text-100 text-center pt-6 pb-4">
           Your Appointments
         </h2>

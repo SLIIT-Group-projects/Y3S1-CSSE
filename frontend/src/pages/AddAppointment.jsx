@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth, useUser } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const AppointmentForm = () => {
   const { getToken } = useAuth();
   const { user } = useUser();
+  const navigate = useNavigate(); // Initialize useNavigate
   const [formData, setFormData] = useState({
     clerkUserId: "",
     patient_name: "",
@@ -86,6 +88,9 @@ const AppointmentForm = () => {
       );
       console.log("Appointment created successfully:", response.data);
       alert("Appointment created successfully");
+
+      // Navigate to the desired URL after successful booking
+      navigate("/appointment/patient/");
     } catch (err) {
       console.error("Error creating appointment:", err);
     }
@@ -97,7 +102,7 @@ const AppointmentForm = () => {
         onSubmit={handleSubmit}
         className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg"
       >
-        <div className="text-3xl font-bold medi-text-100 pb-3 text-center my-6">Appointment</div>
+        <div className="text-3xl font-bold medi-text-100 pb-3 text-center my-6">Book Your Appointment</div>
         <div className="mb-4">
           <label className="block text-gray-700">Patient Name</label>
           <input
