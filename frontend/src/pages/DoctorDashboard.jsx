@@ -8,7 +8,7 @@ function DoctorDashboard() {
   const [clerkUserId, setClerkUserId] = useState("");
   const [file, setFile] = useState(null);
   const [comment, setComment] = useState("");
-  const [doctorName, setDoctorName] = useState("Dr. John Smith");
+  const [doctorName, setDoctorName] = useState("Dr. Vihara Manjaree");
   const [reports, setReports] = useState([]);
   const [editReportId, setEditReportId] = useState(null); // For update
   const navigate = useNavigate();
