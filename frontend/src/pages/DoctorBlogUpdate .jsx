@@ -99,6 +99,7 @@ const DoctorBlogUpdate = () => {
   };
 
   return (
+    <div className="medi-main-gradient pt-6">
     <form
       onSubmit={handleSubmit}
       className="bg-white p-8 rounded-lg shadow-md max-w-3xl mx-auto"
@@ -294,6 +295,7 @@ const DoctorBlogUpdate = () => {
         Update Blog
       </button>
     </form>
+    </div>
   );
 };
 

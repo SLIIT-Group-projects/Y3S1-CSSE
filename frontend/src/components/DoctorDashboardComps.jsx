@@ -97,7 +97,7 @@ const DoctorDashboardComps = () => {
 
   return (
     <div className="p-8 grid grid-cols-6 gap-4">
-      <div className="border flex border-gray-400 p-4 col-span-3 row-span-2 rounded-md bg-blue-500">
+      <div className="border flex border-gray-400 p-4 col-span-3 row-span-2 rounded-md bg-blue-400">
         <div className="flex-shrink-0 mx-5 my-11">
           <img
             src={user?.imageUrl}
@@ -129,7 +129,6 @@ const DoctorDashboardComps = () => {
 
       <div className="border border-gray-400 p-4 col-span-1 row-span-1">
         <h2 className="text-xl font-bold">Appointments</h2>
-        <p className="mt-4">Upcoming appointments and schedule.</p>
         {error ? (
           <p className="text-red-500">{error}</p>
         ) : (

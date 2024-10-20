@@ -29,6 +29,7 @@ const BlogDetails = () => {
   if (!blog) return <div>Blog not found.</div>;
 
   return (
+    <div className="medi-main-gradient pt-1">
     <div className="container mx-auto my-12 p-8 bg-white rounded-lg shadow-lg max-w-4xl">
       <h1 className="text-5xl text-center font-extrabold mb-6 text-blue-900">
         {blog.title}
@@ -134,6 +135,7 @@ const BlogDetails = () => {
           </p>
         </section>
       )}
+    </div>
     </div>
   );
 };

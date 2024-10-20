@@ -59,8 +59,8 @@ const DoctorBlogs = () => {
   };
 
   return (
-    <>
-      <div className="p-8 bg-gray-50 min-h-screen">
+    <div className=" medi-main-gradient">
+      <div className="p-8 min-h-screen">
         <h1 className="text-4xl font-bold text-gray-800 mb-10 text-center">
           Your Blogs
         </h1>
@@ -173,7 +173,7 @@ const DoctorBlogs = () => {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

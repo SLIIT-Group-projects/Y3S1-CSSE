@@ -99,14 +99,6 @@ const AppNavBar = () => {
                 Doctors
               </Link>
             </li>
-            <li>
-              <Link
-                to="/create-blog"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700"
-              >
-                Blogs
-              </Link>
-            </li>
             {/* Conditional rendering for Dashboard link */}
             {isSignedIn && user.publicMetadata.role === "doctor" && (
               <li>
