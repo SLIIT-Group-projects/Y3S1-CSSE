@@ -1,60 +1,57 @@
-// const request = require("supertest");
-// const app = require("../server"); // Assuming this is where your Express app is
+const request = require("supertest");
+const app = require("../server");
 
-// // Define the authorization token
-// const authToken =
-//   "Bearer eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18ybkNIZFhoSXRmMXlxTVFKU3NaTHFvZ05YaEkiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjUxNzMiLCJleHAiOjE3Mjk0MTY2MDEsImlhdCI6MTcyOTQxNjU0MSwiaXNzIjoiaHR0cHM6Ly9jYXVzYWwtYm94ZXItOTAuY2xlcmsuYWNjb3VudHMuZGV2IiwibmJmIjoxNzI5NDE2NTMxLCJzaWQiOiJzZXNzXzJuY1g0TnVNRUdndDUzMjFvRm9ONGI1dGZOMiIsInN1YiI6InVzZXJfMm5DS1ljOGtYQkpWSGRUa3ljVHUzd21xMFQ1In0.dHJNz2Qgc6v81Xv9dwXl3HR-u2kxAxWxLNkIDyS4Hv4em549pF1B9Rhu7cgROd8Z4NnUznoCMg_1S_UVamzU84gUMFmurmO38jCWXrtcsdmkli0wxlgUolz5mrL_K6Z9Eax6FxF_79ikJfv8eaxt-1JVRpyxete-po69o-q6r6O792gbLOl0eacBMdkVgjHu3qcYRKhjEcC3iF90LgUOdBqyRshwjQtSpjxWWh9ImweFkXIxKLMpwG4Z5u_nik-kDAPzHhjP6LqW5Ti6lQJE1fTV8AjXvjjbtjlcgbR9D4HVLajSSl7U7HnksHthRZmws85_NcG4bu4neULXc-A4dA";
-// describe("GET /record/get-records/:userId", () => {
-//   it("should return all records for a specific patient", async () => {
-//     console.log("Testing: Fetching records for patient");
-//     const res = await request(app)
-//       .get("/record/get-records/67079a509fcf32e3b67793c4") // Assuming you are testing this route
-//       .set("Authorization", authToken); // Use the defined token
+// Define the authorization token
+const authToken =
+  "Bearer eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18ybkNIZFhoSXRmMXlxTVFKU3NaTHFvZ05YaEkiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjUxNzMiLCJleHAiOjE3Mjk0MjUwNDYsImlhdCI6MTcyOTQyNDk4NiwiaXNzIjoiaHR0cHM6Ly9jYXVzYWwtYm94ZXItOTAuY2xlcmsuYWNjb3VudHMuZGV2IiwibmJmIjoxNzI5NDI0OTc2LCJzaWQiOiJzZXNzXzJuZWpIVG40clNCWEdadlNCQjBaM2pSM1JSaCIsInN1YiI6InVzZXJfMm5FdWY4dnhNOFllMzJNYWxGOEY0RDJaZmRpIn0.VTpg9KYZxoZV5B1Lel9A6NymLE99L-gORsV9eN8PfUp_LGzqNS8zcUtJOmKv5HxX7mstNgleKWZJOTuinofxbAf48UwV1GOXnC3PQW-VZpGpy6DBimlg0Lm68EcI_0lbzzZDbCZQyWxzqBFngoI4NpsGFRE7wHYdNA3jnIahB6eqMBlVgk6ppGHAp0dwIQMpouboH49volB7k_6bQaNwunWkBwrZnwTSsou92C9OymXyoXsLUGKREf7YITJjoS0srskct-kJmhhTHceKh8Sfvv9E9iSTKVHd0OAVNd_Ql3UYczfGTsiTjwiiXPfZnmIXOpzfrr_04kMGMeNUZTjS_g";
+describe("GET /record/get-records/:userId", () => {
+  it("should return all records for a specific patient", async () => {
+    console.log("Testing: Fetching records for patient");
+    const res = await request(app)
+      .get("/record/get-records/67079a509fcf32e3b67793c4")
+      .set("Authorization", authToken); // Use the defined token
 
-//     console.log("Response:", res.body); // Log the response
-//     expect(res.statusCode).toEqual(200);
-//     expect(res.body).toHaveProperty("records");
-//   });
+    console.log("Response:", res.body);
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toHaveProperty("records");
+  });
+});
 
-//   it("should return 404 if no records found", async () => {
-//     const res = await request(app)
-//       .get("/record/get-records/non-existent-user-id")
-//       .set("Authorization", authToken); // Use the defined token
+// Tests for inserting records
+describe("POST /record/add-record", () => {
+  it("should create a new medical record", async () => {
+    const res = await request(app)
+      .post("/record/add-record")
+      .set("Authorization", authToken) // Use the defined token
+      .send({
+        userId: "67079a509fcf32e3b67793c4",
+        records: "New medical record details",
+        specialNotes: "No special notes",
+      });
 
-//     expect(res.statusCode).toEqual(404);
-//     expect(res.body.message).toBe("No records found for this patient.");
-//   });
-// });
+    expect(res.statusCode).toEqual(201);
+    expect(res.body).toHaveProperty("message", "Record created successfully");
+    expect(res.body.record.records).toEqual("New medical record details");
+    expect(res.body.record.specialNotes).toEqual("No special notes");
+  });
+});
 
-// // Tests for inserting records
-// describe("POST /record/add-record", () => {
-//   it("should create a new medical record", async () => {
-//     const res = await request(app)
-//       .post("/record/add-record")
-//       .set("Authorization", authToken) // Use the defined token
-//       .send({
-//         userId: "67079a509fcf32e3b67793c4",
-//         records: "New medical record details",
-//         specialNotes: "No special notes",
-//       });
+it("should retrieve records successfully for an authenticated user", async () => {
+  const res = await request(app)
+    .get("/user-records")
+    .set("Authorization", authToken);
 
-//     expect(res.statusCode).toEqual(201);
-//     expect(res.body).toHaveProperty("message", "Record created successfully");
-//     //expect(res.body.record).toHaveProperty('_id');
-//     //expect(res.body.record).toEqual('67079a509fcf32e3b67793c4');
-//     //expect(res.body.record).toEqual('67079a509fcf32e3b67793c4');
-//     expect(res.body.record.records).toEqual("New medical record details");
-//     expect(res.body.record.specialNotes).toEqual("No special notes");
-//   });
+  console.log("Response:", res.body); // Log the response
 
-//   it("should return an error if no authorization token is provided", async () => {
-//     const res = await request(app).post("/record/add-record").send({
-//       userId: "67079a509fcf32e3b67793c4",
-//       records: "New medical record details",
-//       prescription: "New medication",
-//       specialNotes: "No special notes",
-//     });
-
-//     //  expect(res.statusCode).toEqual(401); // Unauthorized
-//   });
-// });
+  expect(res.statusCode).toEqual(200);
+  expect(res.body).toHaveProperty("message", "Records retrieved successfully");
+  expect(res.body).toHaveProperty("records");
+  expect(res.body.records[0]).toHaveProperty(
+    "records",
+    "Test medical record details"
+  );
+  expect(res.body.records[0]).toHaveProperty(
+    "specialNotes",
+    "Test special notes"
+  );
+});

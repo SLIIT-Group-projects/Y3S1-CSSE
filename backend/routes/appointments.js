@@ -1,6 +1,7 @@
 const express = require("express");
 const { ClerkExpressRequireAuth } = require("@clerk/clerk-sdk-node");
 const Appointment = require("../models/appointment");
+const AppointmentFactory = require("../factory/AppointmentFactory");
 
 const router = express.Router();
 
@@ -11,31 +12,19 @@ router.post(
   async (req, res) => {
     const clerkUserId = req.auth.userId;
     try {
-
-      const {patient_name,patient_email,age,doctor_name,doc_id, day, slot,appointment_date,note,status } = req.body;
-
-      const current_date = new Date();
-
-      // Create a new doctor record
-      const newAppointment = new Appointment({
-        clerkUserId,
-        patient_name,
-        patient_email,
-        age,
-        doctor_name,
-        doc_id,
-        day,
-        slot,
-        appointment_date,
-        note,
-        current_date,
-        status
+      // Use the factory to create a new appointment
+      const newAppointment = AppointmentFactory.createAppointment({
+        ...req.body,
+        clerkUserId, // Add clerkUserId to the data
       });
 
       // Save the new Appointment to the database
       await newAppointment.save();
 
-      res.status(201).json({ message: "Appointment created successfully", appointment: newAppointment });
+      res.status(201).json({
+        message: "Appointment created successfully",
+        appointment: newAppointment,
+      });
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: "Server error" });
@@ -49,7 +38,7 @@ router.get(
   "/get-doctor-appointments",
   ClerkExpressRequireAuth(),
   async (req, res) => {
-    const clerkUserId = req.auth.userId; // Get the current user's clerkUserId
+    const clerkUserId = req.auth.userId; 
 
     try {
       // Get today's date in UTC
@@ -62,7 +51,7 @@ router.get(
       // Filter appointments based on the current user's clerkUserId, status "Pending", and today's date
       const filter = {
         doc_id: clerkUserId, // Match doc_id with the current user's ID
-        status: "Pending", // Ensure status is "Pending"
+        status: "Pending", 
         appointment_date: { $gte: today, $lt: tomorrow }, // Match today's date
       };
 
@@ -87,8 +76,6 @@ router.get(
     }
   }
 );
-
-
 
 
 
