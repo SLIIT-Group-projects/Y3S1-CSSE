@@ -27,6 +27,7 @@ import UserLabTestsPage from "./pages/UserLabTestsPage";
 import LabReportPage from "./pages/LabReportPage";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import Dashboard from "./pages/Dashboard";
+import DoctorBlogUpdate from "./pages/DoctorBlogUpdate ";
 
 export default function App() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
         <Route path="/create-blog" element={<CreateBlogPage />} />
         <Route path="/get-blog/:id" element={<BlogDetails />} />
         <Route path="/get-doctor-blogs" element={<DoctorBlogs />} />
+        <Route path="//update-blog/:id" element={<DoctorBlogUpdate />} />
         <Route path="/test" element={<SaveUserData />} />
         <Route path="/dashboard" element={<AdminDoctorDashboard />} />
         <Route path="/display-user-data" element={<UserDataDisplay />} />

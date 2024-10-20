@@ -87,6 +87,18 @@ router.get("/get-blogs", async (req, res) => {
   }
 });
 
+router.get("/blog-count", ClerkExpressRequireAuth(), async (req, res) => {
+  try {
+    const clerkUserId = req.auth.userId;
+
+    const blogCount = await Blog.countDocuments({ clerkUserId: clerkUserId });
+    return res.status(200).json(blogCount);
+  } catch (error) {
+    console.error("Error fetching blog count:", error);
+    return res.status(500).json({ error: "Failed to fetch blog count" });
+  }
+});
+
 router.get("/get-blog/:id", async (req, res) => {
   try {
     const blogId = req.params.id; // Get the blog ID from the request parameters
@@ -102,6 +114,56 @@ router.get("/get-blog/:id", async (req, res) => {
     res.status(500).json({ message: "Server error" }); // Return 500 for server errors
   }
 });
+
+router.put(
+  "/update-blog/:id",
+  upload.fields([{ name: "images" }, { name: "videos" }]),
+  async (req, res) => {
+    const {
+      title,
+      introduction,
+      symptoms,
+      causes,
+      prevention,
+      treatment,
+      caseStudy,
+      callToAction,
+      references,
+      relatedLinks,
+      disclaimer,
+    } = req.body;
+
+    const blog = await Blog.findById(req.params.id);
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found." });
+    }
+
+    // Update blog fields
+    blog.title = title;
+    blog.introduction = introduction;
+    blog.symptoms = symptoms;
+    blog.causes = causes;
+    blog.prevention = prevention;
+    blog.treatment = treatment;
+    blog.caseStudy = caseStudy;
+    blog.callToAction = callToAction;
+    blog.references = references;
+    blog.relatedLinks = relatedLinks;
+    blog.disclaimer = disclaimer;
+
+    // Handle file uploads (images and videos)
+    if (req.files.images) {
+      blog.images = req.files.images.map((file) => file.path);
+    }
+
+    if (req.files.videos) {
+      blog.videos = req.files.videos.map((file) => file.path);
+    }
+
+    await blog.save();
+    res.json({ message: "Blog updated successfully." });
+  }
+);
 
 router.get("/get-doctor-blogs", ClerkExpressRequireAuth(), async (req, res) => {
   try {
