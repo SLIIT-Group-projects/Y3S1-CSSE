@@ -4,19 +4,19 @@ const User = require("./user");
 const recordsSchema = new mongoose.Schema({
     doctorId: {
         type: String,
-        required: true
+
     },
     userId: {
         type: String, 
-        required: true
+        //required: true
     },
     records: {
         type: String,
         required: true,
     },
     prescription: {
-        type: [String],
-        required: true,
+        type: [String]
+        
     },
     specialNotes: {
         type: String,
