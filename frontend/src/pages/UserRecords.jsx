@@ -48,7 +48,7 @@ function UserRecords() {
               <th scope="col" className="px-6 py-3 text-left font-semibold tracking-wide">Record Details</th>
               <th scope="col" className="px-6 py-3 text-left font-semibold tracking-wide">Prescription</th>
               <th scope="col" className="px-6 py-3 text-left font-semibold tracking-wide">Special Notes</th>
-              <th scope="col" className="px-6 py-3 text-left font-semibold tracking-wide">Doctor Name</th> {/* New column */}
+               {/* New column */}
               <th scope="col" className="px-6 py-3 text-left font-semibold tracking-wide">Created At</th>
             </tr>
           </thead>
@@ -59,7 +59,7 @@ function UserRecords() {
                   <td className="px-6 py-4 border-b border-gray-200">{record.records}</td>
                   <td className="px-6 py-4 border-b border-gray-200">{record.prescription.join(", ")}</td>
                   <td className="px-6 py-4 border-b border-gray-200">{record.specialNotes}</td>
-                  <td className="px-6 py-4 border-b border-gray-200">{record.doctorId?.name}</td> {/* Display doctor name */}
+                
                   <td className="px-6 py-4 border-b border-gray-200">
                     {new Date(record.createdAt).toLocaleString()}
                   </td>
