@@ -118,4 +118,20 @@ router.get("/all-users", async (req, res) => {
   }
 });
 
+
+//get all users- siluni
+router.get('/get-all-users', async (req, res) => {
+  try {
+    const users = await User.find(); // Fetch all users from the database
+    if (!users || users.length === 0) {
+      return res.status(404).json({ message: 'No users found.' });
+    }
+
+    res.status(200).json({ users });
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ message: 'Internal server error.', error: error.message });
+  }
+});
+
 module.exports = router;

@@ -14,6 +14,8 @@ const { ClerkExpressRequireAuth } = require("@clerk/clerk-sdk-node");
 // Import the Singleton database connection
 require("./dbconnection"); // This will initiate the MongoDB connection
 
+//siluni
+const recordRoute = require("./routes/record")
 
 const app = express();
 const PORT = process.env.PORT || 5000; // Use port 5000
@@ -50,7 +52,8 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-
+//siluni
+app.use("/record", recordRoute)
 
 // const express = require("express");
 // const mongoose = require("mongoose");

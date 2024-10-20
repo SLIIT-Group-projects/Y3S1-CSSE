@@ -6,6 +6,8 @@ import AppNavBar from "../components/AppNavBar";
 import Footer from "../components/Footer";
 import axios from "axios";
 import BlogSection from "../components/BlogCard";
+import ValueSection from "../components/ValueSection";
+import DoctorsViews from "../pages/DoctorsViews";
 
 const HomePage = () => {
   const { user } = useUser(); // Get the current logged-in user
@@ -51,6 +53,8 @@ const HomePage = () => {
     <div>
       <HeroSection />
       <BlogSection />
+      <ValueSection />
+      <DoctorsViews />
       <Footer />
     </div>
   );

@@ -13,11 +13,14 @@ const PatientAppointments = () => {
       try {
         const token = await getToken(); // Retrieve the token for authorization
 
-        const response = await axios.get("http://localhost:5000/appointment/get-patient-appointments", {
-          headers: {
-            Authorization: `Bearer ${token}`, // Add the token to the headers
-          },
-        });
+        const response = await axios.get(
+          "http://localhost:5000/appointment/get-patient-appointments",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Add the token to the headers
+            },
+          }
+        );
 
         setAppointments(response.data.appointments); // Set appointments in state
       } catch (err) {
@@ -30,19 +33,31 @@ const PatientAppointments = () => {
   }, [getToken]);
 
   const handleDelete = async (appointmentId) => {
+    // Ask for confirmation before proceeding with deletion
+    const confirmDelete = window.confirm("Are you sure you want to cancel this appointment?");
+    
+    if (!confirmDelete) {
+      return; // Exit the function if the user cancels
+    }
+
     try {
       const token = await getToken(); // Retrieve the token for authorization
 
       // Make a delete request to the backend
-      const response = await axios.delete(`http://localhost:5000/appointment/delete-appointment/${appointmentId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Add the token to the headers
-        },
-      });
+      const response = await axios.delete(
+        `http://localhost:5000/appointment/delete-appointment/${appointmentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Add the token to the headers
+          },
+        }
+      );
 
       // If the deletion is successful, filter out the deleted appointment
       setAppointments((prevAppointments) =>
-        prevAppointments.filter((appointment) => appointment._id !== appointmentId)
+        prevAppointments.filter(
+          (appointment) => appointment._id !== appointmentId
+        )
       );
 
       // Display success message
@@ -58,47 +73,67 @@ const PatientAppointments = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4 text-center">Your Appointments</h2>
-      {message && <p className="text-green-500 text-center mb-4">{message}</p>} {/* Display success message */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-          <thead>
-            <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-              <th className="py-3 px-6 text-left">Patient Name</th>
-              <th className="py-3 px-6 text-left">Doctor Name</th>
-              <th className="py-3 px-6 text-left">Appointment Date</th>
-              <th className="py-3 px-6 text-left">Slot</th>
-              <th className="py-3 px-6 text-left">Age</th>
-              <th className="py-3 px-6 text-left">Note</th>
-              <th className="py-3 px-6 text-left">Status</th>
-              <th className="py-3 px-6 text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="text-gray-600 text-sm font-light">
-            {appointments.map((appointment) => (
-              <tr key={appointment._id} className="border-b border-gray-200 hover:bg-gray-100">
-                <td className="py-3 px-6 text-left whitespace-nowrap">{appointment.patient_name}</td>
-                <td className="py-3 px-6 text-left">{appointment.doctor_name}</td>
-                <td className="py-3 px-6 text-left">{new Date(appointment.appointment_date).toLocaleString()}</td>
-                <td className="py-3 px-6 text-left">{appointment.slot}</td> {/* New Slot column */}
-                <td className="py-3 px-6 text-left">{appointment.age}</td> {/* New Age column */}
-                <td className="py-3 px-6 text-left">{appointment.note}</td> {/* New Note column */}
-                <td className="py-3 px-6 text-left">{appointment.status}</td>
-                <td className="py-3 px-6 text-center">
-                  {appointment.status !== "Completed" && (
-                    <button
-                      onClick={() => handleDelete(appointment._id)}
-                      className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition duration-200"
-                    >
-                      Cancel
-                    </button>
-                  )}
-                </td>
+    <div className="medi-main-gradient appo-all-main">
+      <div className="container mx-auto p-4">
+        <h2 className="text-3xl font-extrabold mb-4 medi-text-100 text-center pt-6 pb-4">
+          Your Appointments
+        </h2>
+        {message && (
+          <p className="text-green-500 text-center mb-4">{message}</p>
+        )}{" "}
+        {/* Display success message */}
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <thead>
+              <tr className="madi-bg-primary-100 text-white uppercase text-sm leading-normal">
+                <th className="py-3 px-6 text-left">Patient Name</th>
+                <th className="py-3 px-6 text-left">Doctor Name</th>
+                <th className="py-3 px-6 text-left">Appointment Date</th>
+                <th className="py-3 px-6 text-left">Slot</th>
+                <th className="py-3 px-6 text-left">Age</th>
+                <th className="py-3 px-6 text-left">Note</th>
+                <th className="py-3 px-6 text-left">Status</th>
+                <th className="py-3 px-6 text-center">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="text-gray-600 text-sm font-light">
+              {appointments.map((appointment) => (
+                <tr
+                  key={appointment._id}
+                  className="border-b border-gray-200 hover:bg-gray-100 mb-4 gap-4"
+                >
+                  <td className="py-3 px-6 text-left whitespace-nowrap">
+                    {appointment.patient_name}
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    {appointment.doctor_name}
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    {new Date(appointment.appointment_date).toLocaleString()}
+                  </td>
+                  <td className="py-3 px-6 text-left">{appointment.slot}</td>
+                  <td className="py-3 px-6 text-left">
+                    {appointment.age}
+                  </td>
+                  <td className="py-3 px-6 text-left">
+                    {appointment.note}
+                  </td>
+                  <td className="py-3 px-6 text-left">{appointment.status}</td>
+                  <td className="py-3 px-6 text-center">
+                    {appointment.status !== "Completed" && (
+                      <button
+                        onClick={() => handleDelete(appointment._id)}
+                        className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition duration-200"
+                      >
+                        Cancel
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
