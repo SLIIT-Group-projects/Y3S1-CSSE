@@ -55,7 +55,6 @@ router.post(
 );
 
 
-
 // all doctor selection
 router.get("/all-doctors", async (req, res) => {
   try {
