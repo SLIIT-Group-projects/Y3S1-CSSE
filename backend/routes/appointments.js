@@ -1,4 +1,3 @@
-// /routes/blogRoutes.js
 const express = require("express");
 const { ClerkExpressRequireAuth } = require("@clerk/clerk-sdk-node");
 const Appointment = require("../models/appointment");
