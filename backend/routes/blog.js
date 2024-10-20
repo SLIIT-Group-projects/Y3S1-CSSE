@@ -87,6 +87,18 @@ router.get("/get-blogs", async (req, res) => {
   }
 });
 
+router.get("/blog-count", ClerkExpressRequireAuth(), async (req, res) => {
+  try {
+    const clerkUserId = req.auth.userId;
+
+    const blogCount = await Blog.countDocuments({ clerkUserId: clerkUserId });
+    return res.status(200).json(blogCount);
+  } catch (error) {
+    console.error("Error fetching blog count:", error);
+    return res.status(500).json({ error: "Failed to fetch blog count" });
+  }
+});
+
 router.get("/get-blog/:id", async (req, res) => {
   try {
     const blogId = req.params.id; // Get the blog ID from the request parameters
