@@ -1,9 +1,9 @@
 const request = require('supertest');
-const app = require('../server'); // Assuming this is where your Express app is
+const app = require('../server'); 
 const mongoose = require('mongoose');
 
 // Define the authorization token
-const authToken = 'Bearer eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18ybkNIZFhoSXRmMXlxTVFKU3NaTHFvZ05YaEkiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjUxNzMiLCJleHAiOjE3Mjk0MjExMTksImlhdCI6MTcyOTQyMTA1OSwiaXNzIjoiaHR0cHM6Ly9jYXVzYWwtYm94ZXItOTAuY2xlcmsuYWNjb3VudHMuZGV2IiwibmJmIjoxNzI5NDIxMDQ5LCJzaWQiOiJzZXNzXzJuY0ZDYURVOFpCeDIybUhPRlptNVhiTlZpbCIsInN1YiI6InVzZXJfMm5OUXpFUG9ZN3BSWENRNXNVdzg4bmR1WjVkIn0.uP9pqogk4X0wfXOD7PT-6OF0j0HIw3kZGIO6gNrT1NpfyUxTyARwp3HPemJpxAvNUx8TVw2pwXA9B9Dymwegx5D7Ar1dkTRcnIH8szcXjuDon8e-RKQBivPjOyQ-zN5SLlurrJQfORomKrSDu6jJdm_q6-fE7J4N_uQoE_UGMxKjn3CZ3g_pjoTZQVHAZCAKt1UFd6zUIRXdqcSE2oN98mGSfpqPmyphk_DiVIyDSA3K70OpWk9CDVuPlimf1Jjw0sdXO8oNJaF9XexM59nzZwdUmXwdnR5yvFTYtl-lsBH9gBnOpPKUbCuCYYe2Eds1i0-mqlbpm7VHFh9yhNZ2RA'; // Replace with a valid token for testing
+const authToken = 'Bearer eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18ybkNIZFhoSXRmMXlxTVFKU3NaTHFvZ05YaEkiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjUxNzMiLCJleHAiOjE3Mjk0MjY5MTYsImlhdCI6MTcyOTQyNjg1NiwiaXNzIjoiaHR0cHM6Ly9jYXVzYWwtYm94ZXItOTAuY2xlcmsuYWNjb3VudHMuZGV2IiwibmJmIjoxNzI5NDI2ODQ2LCJzaWQiOiJzZXNzXzJuY0ZDYURVOFpCeDIybUhPRlptNVhiTlZpbCIsInN1YiI6InVzZXJfMm5OUXpFUG9ZN3BSWENRNXNVdzg4bmR1WjVkIn0.ydQgnj4mDot3HpL0pAzFKePADkhdXdZs7oyRG-IOpHl6YhRJ_ffOlvD-LoTZcjHvA5sKRqXDyi4_lKUfKrlzKx9k_R1-1QFy1ha9vCdCL90CxYXvRCASdFTZDxGYQKskt70iO4Yug5doGoeTnMt9WVwygsU8J3PxcKY01But2FOSh-DV2hG2HR7zXy9a1K0wIHEHUAXOyKNQapXBK1bhDSZE0IyY_hSgdNoEAaIahixvZf8VrGXW-UwGqf3AOjAmIVVkKX5GhSpn1FQYMyZpxzhePESfgn1SaYI2GivmZ4JNNqKy7mKlv2me2R9qNYYBkuaJmfigL8DQqmZSTjvBnQ'; // Replace with a valid token for testing
 
 describe('POST /appointment/create-appointment', () => {
     it('should create a new appointment', async () => {
@@ -37,6 +37,8 @@ describe('GET /get-doctor-appointments', () => {
             .get('/appointment/get-doctor-appointments')
             .set('Authorization', authToken);
 
+            console.log(res.body);
+
         expect(res.statusCode).toEqual(200);
         expect(res.body).toHaveProperty('message', "Today's pending appointments retrieved successfully.");
         expect(res.body).toHaveProperty('appointments');
@@ -47,7 +49,7 @@ describe('GET /get-doctor-appointments', () => {
 
 describe('DELETE /delete-appointment/:id', () => {
     it('should delete an appointment', async () => {
-        const appointmentId = '6714de7d8401186c9aa519b5'; // Replace with a valid appointment ID
+        const appointmentId = '6714de7d8401186c9aa519b5'; 
 
         const res = await request(app)
             .delete(`/appointment/delete-appointment/${appointmentId}`)

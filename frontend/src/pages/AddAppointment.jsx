@@ -52,6 +52,12 @@ const AppointmentForm = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    // Prevent negative values for the age field
+    if (name === "age" && value < 0) {
+      return; // Do not update state if age is negative
+    }
+
     setFormData({ ...formData, [name]: value });
   };
 
@@ -102,7 +108,9 @@ const AppointmentForm = () => {
         onSubmit={handleSubmit}
         className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg"
       >
-        <div className="text-3xl font-bold medi-text-100 pb-3 text-center my-6">Book Your Appointment</div>
+        <div className="text-3xl font-bold medi-text-100 pb-3 text-center my-6">
+          Book Your Appointment
+        </div>
         <div className="mb-4">
           <label className="block text-gray-700">Patient Name</label>
           <input
@@ -132,8 +140,10 @@ const AppointmentForm = () => {
           <input
             type="number"
             name="age"
+            min="0"
             value={formData.age}
             onChange={handleInputChange}
+            onKeyDown={(e) => e.key === "-" && e.preventDefault()} // Prevent typing "-"
             className="w-full p-2 border-2 border-blue-500 rounded mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
