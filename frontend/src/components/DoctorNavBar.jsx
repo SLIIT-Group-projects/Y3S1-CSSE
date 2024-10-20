@@ -33,7 +33,7 @@ const DoctorNavBar = () => {
               <Link to="/patients">Lab Repoprts</Link>
             </li>
             <li className="px-6 py-3 hover:bg-gray-700">
-              <Link to="/records">Medical Records</Link>
+              <Link to="/AllPatients">Medical Records</Link>
             </li>
             <li className="px-6 py-3 hover:bg-gray-700">
               <Link to="/get-doctor-blogs">Blogs</Link>

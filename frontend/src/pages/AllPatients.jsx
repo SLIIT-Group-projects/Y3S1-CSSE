@@ -50,8 +50,8 @@ function AllPatients() {
   }
 
   return (
-    <>
-      <div className="my-8 text-center font-bold text-3xl text-gray-800">ALL PATIENTS</div>
+    <div className="medi-main-gradient">
+      <div className="my-8 text-center font-bold text-3xl pt-5 text-gray-800">ALL PATIENTS</div>
       <SearchBar onSearch={handleSearch} /> {/* Pass handleSearch as a prop */}
       
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-8">
@@ -97,7 +97,7 @@ function AllPatients() {
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 }
 

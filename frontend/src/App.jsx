@@ -1,6 +1,4 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom"; // Import Navigate for redirection
-import SignupPage from "./components/SignUp";
 import {
   SignedIn,
   SignedOut,
@@ -11,7 +9,6 @@ import {
 import { Routes, Route, Navigate } from "react-router-dom"; // Import Navigate for redirection
 import SigninPage from "./components/SignIn";
 import SignupPage from "./components/SignUp";
-import Navbar from "./components/NavBar";
 import UserProfilePage from "./components/UserProfile";
 import SaveUserData from "./pages/testPage";
 import UserDataDisplay from "./pages/UserDataDisplay";
