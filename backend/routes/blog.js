@@ -1,23 +1,25 @@
-// /routes/blogRoutes.js
 const express = require("express");
 const multer = require("multer");
+const BlogService = require("../services/BlogService");
 const { ClerkExpressRequireAuth } = require("@clerk/clerk-sdk-node");
-const Blog = require("../models/blog");
+const path = require("path");
 
 const router = express.Router();
 
-// Multer setup for file uploads
+// Configure multer storage
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
+  destination: (req, file, cb) => {
+    cb(null, "uploads/"); // Specify the upload directory
   },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + path.extname(file.originalname)); // Use the original file extension
   },
 });
+
 const upload = multer({ storage: storage });
 
-// POST request to create a new doctor blog
+// POST request to create a new blog
 router.post(
   "/create-blog",
   ClerkExpressRequireAuth(),
@@ -25,46 +27,21 @@ router.post(
   async (req, res) => {
     const clerkUserId = req.auth.userId;
     try {
-      const {
-        title,
-        introduction,
-        symptoms,
-        causes,
-        prevention,
-        treatment,
-        caseStudy,
-        callToAction,
-        references,
-        relatedLinks,
-        disclaimer,
-      } = req.body;
+      const blogData = req.body;
 
-      // Create image and video paths
-      const imagePaths = req.files.images
+      const imagePaths = req.files?.images
         ? req.files.images.map((file) => file.path)
         : [];
-      const videoPaths = req.files.videos
+
+      const videoPaths = req.files?.videos
         ? req.files.videos.map((file) => file.path)
         : [];
 
-      const newBlog = new Blog({
-        clerkUserId,
-        title,
-        introduction,
-        symptoms,
-        causes,
-        prevention,
-        treatment,
-        caseStudy,
-        callToAction,
+      const newBlog = await BlogService.createBlog(clerkUserId, {
+        ...blogData,
         images: imagePaths,
         videos: videoPaths,
-        references,
-        relatedLinks,
-        disclaimer,
       });
-
-      await newBlog.save();
 
       res
         .status(201)
@@ -76,10 +53,10 @@ router.post(
   }
 );
 
+// GET all blogs
 router.get("/get-blogs", async (req, res) => {
-  const { id } = req.params;
   try {
-    const blogs = await Blog.find();
+    const blogs = await BlogService.getAllBlogs();
     res.json(blogs);
   } catch (error) {
     console.error("Error fetching blogs:", error);
@@ -87,90 +64,49 @@ router.get("/get-blogs", async (req, res) => {
   }
 });
 
-router.get("/blog-count", ClerkExpressRequireAuth(), async (req, res) => {
-  try {
-    const clerkUserId = req.auth.userId;
-
-    const blogCount = await Blog.countDocuments({ clerkUserId: clerkUserId });
-    return res.status(200).json(blogCount);
-  } catch (error) {
-    console.error("Error fetching blog count:", error);
-    return res.status(500).json({ error: "Failed to fetch blog count" });
-  }
-});
-
+// GET blog by ID
 router.get("/get-blog/:id", async (req, res) => {
   try {
-    const blogId = req.params.id; // Get the blog ID from the request parameters
-    const blog = await Blog.findById(blogId); // Find the blog by ID
-
-    if (!blog) {
-      return res.status(404).json({ message: "Blog not found" }); // Return 404 if not found
-    }
-
-    res.json(blog); // Return the blog details
+    const blog = await BlogService.getBlogById(req.params.id);
+    res.json(blog);
   } catch (error) {
     console.error("Error fetching blog:", error);
-    res.status(500).json({ message: "Server error" }); // Return 500 for server errors
+    res.status(404).json({ message: "Blog not found" });
   }
 });
 
+// PUT update blog
 router.put(
   "/update-blog/:id",
   upload.fields([{ name: "images" }, { name: "videos" }]),
   async (req, res) => {
-    const {
-      title,
-      introduction,
-      symptoms,
-      causes,
-      prevention,
-      treatment,
-      caseStudy,
-      callToAction,
-      references,
-      relatedLinks,
-      disclaimer,
-    } = req.body;
+    try {
+      const updateData = req.body;
+      if (req.files.images) {
+        updateData.images = req.files.images.map((file) => file.path);
+      }
 
-    const blog = await Blog.findById(req.params.id);
-    if (!blog) {
-      return res.status(404).json({ message: "Blog not found." });
+      if (req.files.videos) {
+        updateData.videos = req.files.videos.map((file) => file.path);
+      }
+
+      const updatedBlog = await BlogService.updateBlog(
+        req.params.id,
+        updateData
+      );
+      res.json({ message: "Blog updated successfully.", blog: updatedBlog });
+    } catch (error) {
+      console.error("Error updating blog:", error);
+      res.status(404).json({ message: "Blog not found." });
     }
-
-    // Update blog fields
-    blog.title = title;
-    blog.introduction = introduction;
-    blog.symptoms = symptoms;
-    blog.causes = causes;
-    blog.prevention = prevention;
-    blog.treatment = treatment;
-    blog.caseStudy = caseStudy;
-    blog.callToAction = callToAction;
-    blog.references = references;
-    blog.relatedLinks = relatedLinks;
-    blog.disclaimer = disclaimer;
-
-    // Handle file uploads (images and videos)
-    if (req.files.images) {
-      blog.images = req.files.images.map((file) => file.path);
-    }
-
-    if (req.files.videos) {
-      blog.videos = req.files.videos.map((file) => file.path);
-    }
-
-    await blog.save();
-    res.json({ message: "Blog updated successfully." });
   }
 );
 
+// GET blogs by user
 router.get("/get-doctor-blogs", ClerkExpressRequireAuth(), async (req, res) => {
   try {
     const userId = req.auth.userId;
-
-    const blogs = await Blog.find({ clerkUserId: userId });
-
+    const blogs = await BlogService.getBlogsByUserId(userId);
     res.json(blogs);
   } catch (error) {
     console.error("Error fetching blogs:", error);
@@ -178,18 +114,26 @@ router.get("/get-doctor-blogs", ClerkExpressRequireAuth(), async (req, res) => {
   }
 });
 
+// DELETE blog
 router.delete("/delete-blog/:id", async (req, res) => {
-  const { id } = req.params; // Get the ID from the request parameters
-
   try {
-    const deletedBlog = await Blog.findByIdAndDelete(id); // Find and delete the blog by ID
-    if (!deletedBlog) {
-      return res.status(404).json({ message: "Blog not found." });
-    }
+    await BlogService.deleteBlog(req.params.id);
     res.status(200).json({ message: "Blog deleted successfully." });
   } catch (error) {
     console.error("Error deleting blog:", error);
-    res.status(500).json({ message: "Server error." });
+    res.status(404).json({ message: "Blog not found." });
+  }
+});
+
+// GET blog count by user ID
+router.get("/blog-count", ClerkExpressRequireAuth(), async (req, res) => {
+  try {
+    const clerkUserId = req.auth.userId;
+    const blogCount = await BlogService.countBlogsByUserId(clerkUserId);
+    return res.status(200).json(blogCount);
+  } catch (error) {
+    console.error("Error fetching blog count:", error);
+    return res.status(500).json({ error: "Failed to fetch blog count" });
   }
 });
 
